@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from 'axios';
 
 const API_BASE_URL = "http://localhost:3001/api/v1";
 
@@ -48,6 +48,7 @@ export const performApiAction = async (action, token, data = {}) => {
             data,
             headers,
         });
+
         return response.data;
     } catch (error) {
         console.error("Erreur lors de l'exécution de l'action :", error);

@@ -2,7 +2,7 @@ import React from "react";
 import { createBrowserRouter, Outlet } from "react-router-dom";
 
 import Footer from "../layout/Footer";
-import Navbar from "../layout/NavBar";
+import Navbar from "../layout/Navbar";
 
 import Homepage from "../pages/Homepage";
 import ErrorPage from "../pages/ErrorPage";

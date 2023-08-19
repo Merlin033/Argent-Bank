@@ -23,6 +23,7 @@ const Loginpage = () => {
         email: username,
         password: password,
       });
+      console.log("API Response:", response);
       dispatch(setAuth({ response }));
       navigate("/profil");
     } catch (error) {

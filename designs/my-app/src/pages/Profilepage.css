@@ -4,6 +4,12 @@
     color: #fff;
     font-weight: bold;
     padding: 10px;
+    cursor: pointer;
+  }
+
+.edit-button:hover {
+    border-color: #46d5a1;
+    background-color: #46d5a1;
   }
   
 .header {
