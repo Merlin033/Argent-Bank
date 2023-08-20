@@ -1,35 +1,40 @@
-import React, { useState } from 'react';
-import { NavLink } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { performApiAction } from '../service/Api';
 import { setAuth } from '../redux/Reducers/AuthReducer';
 import "./Loginpage.css";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector} from 'react-redux';
+import { useGetTokenMutation } from '../service/apiSlice';
 
 const Loginpage = () => {
 
   const dispatch = useDispatch();
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState('');
   const [checkRemember, setCheckRemember] = useState('');
   const navigate = useNavigate();
+  const [getToken, {isLoading, isError}] = useGetTokenMutation();
 
   const handleCheckBox = () => setCheckRemember(!checkRemember);
 
+// if connected
+const token = useSelector((state) => state.auth.isLoggedIn);
+useEffect(() => {
+  if (token) {
+    navigate("/profil");
+  }
+}, [token, navigate]);  
+
   const handleSignIn = async (e) => {
     e.preventDefault();
-    try {
-      const response = await performApiAction("login", null, {
-        email: username,
-        password: password,
-      });
-      console.log("API Response:", response);
-      dispatch(setAuth({ response }));
-      navigate("/profil");
-    } catch (error) {
-      console.log(error);
-    }
-  };
+      try {
+        const response = await getToken({ email, password }).unwrap();
+        const token = response.body.token;
+        dispatch(setAuth(token));
+        navigate("/profil");
+      } catch (error) {
+        console.error("Error signing in:", error);
+      }
+    };
 
     return (
 
@@ -40,7 +45,7 @@ const Loginpage = () => {
         <form onSubmit={handleSignIn}>
           <div className="input-wrapper">
             <label htmlFor="username">Username</label
-            ><input type="text" id="username" onChange={(e) => setUsername(e.target.value)}/>
+            ><input type="text" id="username" onChange={(e) => setEmail(e.target.value)}/>
           </div>
           <div className="input-wrapper">
             <label htmlFor="password">Password</label

@@ -4,34 +4,41 @@ import "./Navbar.css";
 import { useDispatch, useSelector} from "react-redux";
 import { setLogout } from "../redux/Reducers/AuthReducer";
 import { useEffect } from "react";
-import { performApiAction } from "../service/Api";
-import { setGetProfile } from "../redux/Reducers/ProfileUserReducer";
+import { setClearProfile, setGetProfile } from "../redux/Reducers/ProfileUserReducer";
+import { useGetProfileMutation } from "../service/apiSlice";
 
 function Navbar() {
 
   const token = useSelector((state) => state.auth.token);
   const dataUser = useSelector((state) => state.profile);
   const dispatch = useDispatch();
+  const [getProfile] = useGetProfileMutation();
+
 
   const handleLogout = () => {
     // si l'utilisateur est connecté, suprresion du token pour se deconnecter
     if (token) {
       dispatch(setLogout());
+      dispatch(setClearProfile())
     }
   };
+
   useEffect(() => {
     if (token) {
-      const fetchData = async () => {
-        try {
-          const data = await performApiAction("getProfile", token, {});
-          dispatch(setGetProfile({ data }));
-        } catch (error) {
-          console.log(error, "error");
+    const fetchUserProfile = async () => {
+      try {
+        if (token) {
+          const response = await getProfile(token).unwrap();
+          dispatch(setGetProfile(response.body));
         }
-      };
-      fetchData();
+      } catch (error) {
+        console.error("Error fetching user profile:", error);
+      }
+    };
+      fetchUserProfile();
     }
   }, [dispatch, token]);
+ 
     return (
       <nav className="main-nav">
       <NavLink to="/" className="main-nav-logo">

@@ -1,26 +1,31 @@
 import React, { useState } from 'react';
 import "./EditName.css";
-import { performApiAction } from '../service/Api';
 import { useSelector } from 'react-redux/es/hooks/useSelector';
 import { useDispatch } from 'react-redux';
 import { setEditUser } from '../redux/Reducers/ProfileUserReducer';
+import { useEditUserMutation } from '../service/apiSlice';
 
 const EditName = ({onClose, showEditName}) => {
     const dataUser = useSelector((state) => state.profile);
     const token = useSelector((state) => state.auth.token);
     const [userName, setUserName] = useState(dataUser.userName);
     const dispatch = useDispatch();
+    const [editUser] = useEditUserMutation();
     
     const handleSaveChanges = async (e) => {
         e.preventDefault();
-
-        try {
-          await performApiAction("editUser", token, { userName: userName });
-    
-          dispatch(setEditUser({ userName }));
+        const user = {
+            token: token,
+            userName: userName
+        };
+        
+        try {       
+            const response = await editUser(user).unwrap();
+            dispatch(setEditUser(response.body.userName));
         } catch (error) {
-          console.log(error);
+            console.error("Error updating user name:", error);
         }
+        return onClose();
     };
 
     return (

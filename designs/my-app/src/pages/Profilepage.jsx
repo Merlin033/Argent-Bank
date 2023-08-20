@@ -1,18 +1,23 @@
 import React from 'react';
 import Account from '../components/Account';
 import "./Profilepage.css"
-import { useDispatch, useSelector} from "react-redux";
+import { useSelector} from "react-redux";
 import { useState, useEffect } from 'react';
-import { performApiAction } from '../service/Api';
-import { setGetProfile } from '../redux/Reducers/ProfileUserReducer';
+import { useNavigate } from 'react-router-dom';
 import EditName from '../components/EditName';
 
 const Profilpage = () => {
 
-    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const token = useSelector((state) => state.auth.token)
     const dataUser = useSelector((state) => state.profile);
-    const [toggleEditName, setToggleEditName] = useState(false);
     const [showEditName, setShowEditName] = useState(false);
+
+    useEffect(() => {
+        if (!token) {
+          navigate("/login");
+        }
+      }, [token, navigate]);
 
     const handleEditName = () => {
         setShowEditName(!showEditName);
@@ -21,7 +26,7 @@ const Profilpage = () => {
     return (
         <main className='main bg-dark'>
            {!showEditName && <div className="header">
-                <h1>Welcome back<br />{`${dataUser.firstName} ${dataUser.lastName}`}</h1>
+                <h1>Welcome back<br />{`${dataUser?.firstName} ${dataUser?.lastName}`}</h1>
                 <button className="edit-button" onClick={handleEditName}>Edit Name</button>
             </div>}
       {showEditName && <EditName 
