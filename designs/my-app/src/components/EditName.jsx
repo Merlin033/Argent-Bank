@@ -9,11 +9,25 @@ const EditName = ({onClose, showEditName}) => {
     const dataUser = useSelector((state) => state.profile);
     const token = useSelector((state) => state.auth.token);
     const [userName, setUserName] = useState(dataUser.userName);
+    const [errorUserName, setErrorUserName] = useState("");
     const dispatch = useDispatch();
     const [editUser] = useEditUserMutation();
     
     const handleSaveChanges = async (e) => {
         e.preventDefault();
+
+        if (userName.length < 3) {
+            setErrorUserName("User name should be at least 3 characters long.");
+            return;
+        }
+
+        if (userName === dataUser.userName) {
+            setErrorUserName("New user name should be different from the current user name.");
+            return;
+        }
+
+        setErrorUserName("")
+
         const user = {
             token: token,
             userName: userName
@@ -22,10 +36,10 @@ const EditName = ({onClose, showEditName}) => {
         try {       
             const response = await editUser(user).unwrap();
             dispatch(setEditUser(response.body.userName));
+            return onClose();
         } catch (error) {
             console.error("Error updating user name:", error);
         }
-        return onClose();
     };
 
     return (
@@ -40,7 +54,9 @@ const EditName = ({onClose, showEditName}) => {
                     type="text"
                     placeholder={userName}
                     onChange={(e) => setUserName(e.target.value)}
+                    aria-describedby="userNameError"
                 /></div>
+                {errorUserName && <p className="error-message" id="userNameError">{errorUserName}</p>}
                 <div className="input-wrap">
                 <label htmlFor="firstName">First Name</label>
                 <input
