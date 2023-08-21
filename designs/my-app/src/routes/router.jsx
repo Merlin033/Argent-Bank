@@ -8,6 +8,7 @@ import Homepage from "../pages/Homepage";
 import ErrorPage from "../pages/ErrorPage";
 import Loginpage from "../pages/Loginpage";
 import Profilepage from "../pages/Profilepage";
+import SignUp from "../pages/SignUp";
 
 const HeaderFooterLayout = ({mainClassName}) => {
     return (
@@ -35,6 +36,10 @@ const HeaderFooterLayout = ({mainClassName}) => {
         {
           path: "/profil",
           element: <Profilepage />
+        },
+        {
+          path: "/signup",
+          element: <SignUp />
         }
       ]
     }

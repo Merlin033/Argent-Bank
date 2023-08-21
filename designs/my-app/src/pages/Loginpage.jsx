@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { setAuth } from '../redux/Reducers/AuthReducer';
 import "./Loginpage.css";
 import { useDispatch, useSelector} from 'react-redux';
@@ -56,10 +56,8 @@ useEffect(() => {
             <input type="checkbox" id="remember-me" checked={checkRemember} onChange={handleCheckBox} />
             <label htmlFor="remember-me">Remember me</label>
           </div>
-           
-          {/* <NavLink to="/profil" className="sign-in-button">Sign In</NavLink> */}
-           
            <button type="submit" className="sign-in-button">Sign In</button>  
+           <NavLink to="/signup" className="sign-in-button a-button">Sign Up</NavLink>  
           
         </form>
       </section>

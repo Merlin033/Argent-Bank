@@ -7,7 +7,6 @@
   }
   .sign-in-button {
     display: block;
-    width: 100%;
     padding: 8px;
     font-size: 1.1rem;
     font-weight: bold;
@@ -15,6 +14,16 @@
     border-color: #00bc77;
     background-color: #00bc77;
     color: #fff;
+    cursor: pointer;
+  }
+  .sign-in-button:hover {
+    border-color: #46d5a1;
+    background-color: #46d5a1;
+  }
+
+  .a-button{
+    text-decoration: none;
+    box-shadow:#12002b 
   }
   
   .sign-in-content {

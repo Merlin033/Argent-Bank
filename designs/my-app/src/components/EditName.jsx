@@ -77,7 +77,7 @@ const EditName = ({onClose, showEditName}) => {
                 /></div>
                 <div className="button-group">
                     <button className="save-button" onClick={handleSaveChanges}>Save</button>
-                    <button className="cancel-button" onClick={onClose}>Cancel</button>
+                    <button type='button' className="cancel-button" onClick={onClose}>Cancel</button>
                 </div>
                 </form>
             </div>
